@@ -1,0 +1,303 @@
+/*Student Name: Ebunola Ajayi
+  Student Number: C19324126
+  Assignment 1 - ADS - Library Assignment
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+//For the linked list
+#include <malloc.h>
+#include <stdbool.h>
+
+#define MIN_YEAR 2008
+#define FILE_NAME "LibraryAssignment.bin"
+
+ struct Library
+{ //Variables
+    int bookId;
+    char bookName[100];
+    char bookAuthor[100];
+    int pubYear;
+    struct Library *next;
+    
+}* head;
+
+//1. Add A Book
+ void addABook(int bookId, char *bookName, char *bookAuthor, int pubYear) {
+ 
+  struct Library * library = (struct Library *) malloc(sizeof(struct Library));
+  library->bookId = bookId;
+  strcpy(library->bookName, bookName);
+  strcpy(library->bookAuthor, bookAuthor);
+  library->next = NULL;
+
+  if(head==NULL) {
+    head = library;
+  } else {
+    library->next = head;
+    head = library;
+  }
+
+// if date of publication is older than 2008....:
+  if (pubYear < 2008) {
+    printf("Error! The date of publication cannot be older than 2008! \n");
+     }
+  
+  }
+
+
+//2.Borrow a book
+void borrowABook(bookId) { 
+  bool bookStatus = false;
+  char customerName[100];
+  int count = 0;
+
+  struct Library * book = head;
+
+  while (book!= NULL) {
+    if (book-> bookId == bookId) {
+      printf("This book has been found! \n");
+      printf("Enter Customer Name: \n");
+      scanf("%s", customerName);
+      printf("The book with the ID of %d has been borrowed by %s \n", bookId, customerName);
+      printf("bookStatus is true \n");
+      count++;
+    }
+    printf("Sorry, this book was not found in the library. \n");
+  }
+
+}
+
+//3.Return A Book
+void returnABook(bookId, customerName) {
+  struct Library * book = head;
+
+
+  while (book!= NULL) {
+    if (book-> bookId == bookId) {
+      printf("This book belongs to this library and has been returned. \n");
+    }
+    printf("Sorry, this book does not belong in this library. \n");
+  }
+
+}
+
+
+//4. Delete A Book
+void deleteABook(int bookId, int pubYear) {
+  struct Library * bookToDelete = head;
+  struct Library * bookToDelete2 = head;
+
+  while (bookToDelete != NULL) {
+    if(bookToDelete->bookId == bookId) {
+      printf("This book is in the library. \n");
+
+      if (bookToDelete== bookToDelete2) {
+        head = head ->next ;
+        free(bookToDelete);
+      } else {
+        bookToDelete2-> next = bookToDelete -> next;
+        free(bookToDelete);
+      }
+      printf("This book has been deleted \n");
+      return;
+    }
+    bookToDelete2 = bookToDelete;
+    bookToDelete = bookToDelete-> next;
+  }
+  
+  //If Book Is Not Found
+  printf("This book is not in the library \n");
+
+
+   //If Book Is Before 2010  
+   if (pubYear > 2010) {
+     printf("This book cannot be deleted, only books older than 2010 can be deleted! \n");
+   }
+  
+}
+
+
+//5. View All Books
+void viewAllBooks() {
+  printf("VIEW ALL BOOKS \n\n");
+
+  struct Library * book = head;
+  while (book != NULL) {
+    printf("Book Identifier: %d \n", book-> bookId);
+    printf("Book Name: %s \n", book-> bookName);
+    printf("Book Author: %s \n", book -> bookAuthor);
+    printf("Published Year: %d \n", book->pubYear);
+    book = book->next;
+  }
+}
+
+//6. View A Book
+void viewABook(int bookId) {
+struct Library * book = head;
+
+while (book != NULL) {
+  if (book-> bookId = bookId) {
+     printf("This book is in the library. \n");
+     return;
+  }
+  book = book -> next;
+}
+
+printf("This book was not found in the library. \n");
+
+}
+
+//7. Book Details
+void bookDetails() {
+printf("BOOK DETAILS\n\n");
+
+struct Library * book = head;
+  while (book != NULL) {
+    printf("Book Identifier: %d \n", book-> bookId);
+    printf("Book Name: %s \n", book-> bookName);
+    printf("Book Author: %s \n", book -> bookAuthor);
+    printf("Published Year: %d \n", book->pubYear);
+    printf("This book has been on loan  number of times \n");
+    book = book->next;
+  }
+}
+
+//8.Library Card
+void libraryCardTask() {
+  //8.Library Card Task
+  char name[100];
+  char answer[3];
+  char fName[100];
+  char sName[100];
+  char email[50];
+
+  printf("Apply fo a completely free library card! \n");
+  
+    printf("Please enter in the following details.. \n\n");
+
+    printf("First Name: \n");
+    scanf("%s", fName);
+    printf("Surname: \n");
+    scanf("%s", sName);
+    printf("Email Address: \n");
+    scanf("%s", email);
+    printf("Thank you for applying for a library card. An email has been sent to your address! \n");
+}
+
+
+//Main Menu Function
+int main() {
+  //Variables
+  char bookName[100];
+  char bookAuthor[100];
+  char customerName[100];
+  int bookId;
+  int optionNum;
+  int pubYear;
+  head = NULL;
+
+ 
+
+  do {
+ printf("\n Welcome to Your Local Library.\n\n");
+
+  //Menu Options
+  printf("MENU OPTIONS: \n");
+  printf("1. Add A New Book \n");
+  printf("2. Borrow A Book \n");
+  printf("3. Return A Book \n");
+  printf("4. Delete An Old Book \n");
+  printf("5. View All Books \n");
+  printf("6. View A Specific Book\n");
+  printf("7. View Details of Most & Least Popular Books \n");
+  printf("8. Apply For A Library Card \n");
+  printf("9. Exit The System \n\n");
+
+  //Pick a Menu Option
+  printf("Please pick any option from our menu above.\n");
+  scanf("%d",&optionNum);
+
+  if (1 <= optionNum || optionNum <=8 )
+   {  switch(optionNum)
+      {
+        //Add A Book
+        case 1: 
+           printf("\n ADD A BOOK \n\n");
+           printf("Book Identifier: \n");
+           scanf("%d",&bookId);
+           printf("Book Name: \n");
+           scanf("%s", bookName);
+           printf("Book Authour: \n");
+           scanf("%s", bookAuthor);
+           printf("Year of Publication: \n");
+           scanf("%d",&pubYear);
+           addABook(bookId, bookName, bookAuthor, pubYear);
+           break;
+
+        //Borrow A Book
+        case 2:
+           printf("BORROW A BOOK \n\n");
+           printf("Book Identifier: \n");
+           scanf("%d",&bookId);
+           borrowABook(bookId);
+           break;
+
+        //Return A Book
+        case 3:
+           printf("RETURN A BOOK \n\n");
+           printf("Book Identifier: \n");
+           scanf("%d",&bookId);
+           printf("Customer Name: \n");
+           scanf("%s", customerName);
+           returnABook();
+           break;
+
+        //Delete A Book
+        case 4:
+           printf("DELETE A BOOK \n\n");
+           printf("Book Identifier: \n");
+           scanf("%d",&bookId);
+           deleteABook(bookId, pubYear);
+           break;
+
+        //View All Books
+        case 5:
+            viewAllBooks();
+            break;
+
+        //View A Specific Book    
+        case 6:
+            printf("VIEW A SPECIFIC BOOK \n\n");
+            printf("Book Identifier: \n");
+            scanf("%d",&bookId);
+            viewABook(bookId);
+            break;
+
+        //View Book Details - Popular to Least
+        case 7:
+           bookDetails();
+           break;
+
+        //Library Card
+        case 8:
+           libraryCardTask();
+           break;   
+
+
+              default:
+				printf("Exiting the system. \n");
+				break;
+      }
+
+  }
+ } while(optionNum !=9);
+ return 0;
+}
+
+
+
+
+ 
